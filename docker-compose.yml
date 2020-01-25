@@ -16,7 +16,7 @@ services:
 
   redis:
     container_name: redis
-    image: redis:5.0.5
+    image: redis:latest
     hostname: redis
 
   db:
@@ -28,3 +28,15 @@ services:
       - 5432:5432
     env_file:
       - ./.env.db
+
+  headquarter:
+    container_name: headquarter
+    build:
+      context: ./headquarter
+      dockerfile: Dockerfile
+    hostname: headquarter
+    command: su -m app_user -c "celery -A manage.celery_app worker --loglevel=info"
+    env_file:
+      - ./.env.headquarter
+    depends_on:
+      - redis
