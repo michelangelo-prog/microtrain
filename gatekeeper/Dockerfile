@@ -22,5 +22,8 @@ COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
 # add app
 COPY . /usr/src/app
 
+# run server
+CMD ["./entrypoint.sh"]
+
 # add user
 RUN adduser --disabled-password --gecos '' app_user

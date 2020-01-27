@@ -9,7 +9,7 @@ APP_SETTINGS = {
 }
 
 
-def create_app(script_info=None):
+def create_app():
 
     # instantiate the app
     app = Flask(__name__)

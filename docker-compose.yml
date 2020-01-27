@@ -6,17 +6,18 @@ services:
     build:
       context: ./train
       dockerfile: Dockerfile
-    command: python manage.py run -h 0.0.0.0
+    command: su -m app_user -c "python manage.py run -h 0.0.0.0"
     ports:
-      - 5000:5000
+      - 5001:5000
     env_file:
       - ./.env.train
     depends_on:
       - redis
+      - db
 
   redis:
     container_name: redis
-    image: redis:latest
+    image: redis:5.0.7
     hostname: redis
 
   db:
@@ -40,3 +41,18 @@ services:
       - ./.env.headquarter
     depends_on:
       - redis
+      - gatekeeper
+
+  gatekeeper:
+    container_name: gatekeeper
+    build:
+      context: ./gatekeeper
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+    hostname: gatekeeper
+    command: su -m app_user -c "python manage.py run -h 0.0.0.0"
+    env_file:
+      - ./.env.gatekeeper
+    depends_on:
+      - db
