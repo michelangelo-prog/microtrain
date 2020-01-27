@@ -19,5 +19,8 @@ RUN pip install -r requirements.txt
 # add app
 COPY . /usr/src/app
 
+# run server
+CMD ["./entrypoint.sh"]
+
 # add user
 RUN adduser --disabled-password --gecos '' app_user

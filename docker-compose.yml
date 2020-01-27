@@ -13,7 +13,6 @@ services:
       - ./.env.train
     depends_on:
       - redis
-      - db
 
   redis:
     container_name: redis
