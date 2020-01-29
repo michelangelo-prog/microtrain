@@ -2,10 +2,12 @@ import subprocess
 
 from flask.cli import FlaskGroup
 
-from train.domain import create_app
+from train.domain import create_app, make_celery
 
 app = create_app()
 cli = FlaskGroup(create_app=create_app)
+
+celery = make_celery(app)
 
 
 @cli.command()

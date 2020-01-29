@@ -1,6 +1,9 @@
 import os
 
+from celery import Celery
 from flask import Flask
+
+from train.domain.config import CeleryConfig
 
 APP_SETTINGS = {
     "Development": "train.domain.config.DevelopmentConfig",
@@ -24,3 +27,17 @@ def create_app():
         return {"app": app}
 
     return app
+
+
+def make_celery(app):
+    celery = Celery(
+        app.import_name,
+        broker=CeleryConfig.CELERY_BROKER_URL,
+        backend=CeleryConfig.CELERY_RESULT_BACKEND,
+    )
+
+    celery.conf.beat_schedule = {
+        "see-you-in-ten-seconds-task": {"task": "periodic.see_you", "schedule": 10.0}
+    }
+
+    return celery
