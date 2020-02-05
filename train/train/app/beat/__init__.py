@@ -3,6 +3,8 @@ from celery import Celery
 from train.app.rest import app
 from train.domain.config import CeleryConfig
 
+from train.domain.utils import get_train_speed
+
 
 def make_celery(app):
     celery = Celery(
@@ -12,7 +14,11 @@ def make_celery(app):
     )
 
     celery.conf.beat_schedule = {
-        "see-you-in-ten-seconds-task": {"task": "periodic.see_you", "schedule": 10.0}
+        "periodic-task": {
+            "task": "periodic.train_speed",
+            "args": (dict(actual_speed=get_train_speed()),),
+            "schedule": 5.0,
+        }
     }
 
     return celery

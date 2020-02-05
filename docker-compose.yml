@@ -35,7 +35,7 @@ services:
       context: ./headquarter
       dockerfile: Dockerfile
     hostname: headquarter
-    command: su -m app_user -c "celery -A manage.celery_app worker --loglevel=info"
+    command: su -m app_user -c "celery -A headquarter.app.worker.handler:worker worker --loglevel=info"
     env_file:
       - ./.env.headquarter
     depends_on:
