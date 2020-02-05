@@ -6,7 +6,7 @@ services:
     build:
       context: ./train
       dockerfile: Dockerfile
-    command: su -m app_user -c "celery -A manage:celery beat --loglevel=info --pidfile /tmp/celerybeat.pid -s /tmp/celerybeat-schedule"
+    command: su -m app_user -c "celery -A train.app.beat:celery beat --loglevel=info --pidfile /tmp/celerybeat.pid -s /tmp/celerybeat-schedule"
     ports:
       - 5001:5000
     env_file:

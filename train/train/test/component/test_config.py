@@ -3,7 +3,8 @@ import unittest
 from flask import current_app
 from flask_testing import TestCase
 
-from train.domain import APP_SETTINGS, create_app
+from train.app.rest import create_app
+from train.domain import APP_SETTINGS
 
 app = create_app()
 
