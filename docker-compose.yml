@@ -1,23 +1,6 @@
 version: '3.5'
 
 services:
-  train:
-    container_name: train
-    build:
-      context: ./train
-      dockerfile: Dockerfile
-    command: su -m app_user -c "celery -A train.app.beat:celery beat --loglevel=info --pidfile /tmp/celerybeat.pid -s /tmp/celerybeat-schedule"
-    ports:
-      - 5001:5000
-    env_file:
-      - ./.env.train
-    depends_on:
-      - redis
-
-  redis:
-    container_name: redis
-    image: redis:5.0.7
-    hostname: redis
 
   db:
     container_name: db
@@ -29,6 +12,37 @@ services:
     env_file:
       - ./.env.db
 
+  train_beat:
+    container_name: train-beat
+    build:
+      context: ./train
+      dockerfile: Dockerfile
+    command: su -m app_user -c "celery -A train.app.beat:celery beat --loglevel=info --pidfile /tmp/celerybeat.pid -s /tmp/celerybeat-schedule"
+    ports:
+      - 5004:5000
+    env_file:
+      - ./.env.train
+    depends_on:
+      - redis_train
+
+  train_worker:
+    container_name: train-worker
+    build:
+      context: ./train
+      dockerfile: Dockerfile
+    command: su -m app_user -c "celery -A train.app.beat:celery worker --loglevel=info"
+    ports:
+      - 5002:5000
+    env_file:
+      - ./.env.train
+    depends_on:
+      - redis_train
+
+  redis_train:
+    container_name: redis-train
+    image: redis:5.0.7
+    hostname: redis_train
+
   headquarter:
     container_name: headquarter
     build:
@@ -36,11 +50,17 @@ services:
       dockerfile: Dockerfile
     hostname: headquarter
     command: su -m app_user -c "celery -A headquarter.app.worker.handler:worker worker --loglevel=info"
+    ports:
+      - 5003:5000
     env_file:
       - ./.env.headquarter
     depends_on:
-      - redis
-      - gatekeeper
+      - redis_headquarter
+
+  redis_headquarter:
+    container_name: redis
+    image: redis:5.0.7
+    hostname: redis_headquarter
 
   gatekeeper:
     container_name: gatekeeper
