@@ -32,7 +32,7 @@ class ProductionConfig(BaseConfig):
 
 
 class CeleryConfig(object):
-    """Celery configuration."""
+    """Celery Train configuration."""
 
     CELERY_BROKER_URL = os.getenv("CELERY_BROKER", "redis://redis_train:6379/0")
     CELERY_RESULT_BACKEND = os.getenv(
