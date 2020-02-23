@@ -58,7 +58,7 @@ services:
       - redis_headquarter
 
   redis_headquarter:
-    container_name: redis
+    container_name: redis-headquarter
     image: redis:5.0.7
     hostname: redis_headquarter
 
