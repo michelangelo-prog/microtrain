@@ -35,11 +35,17 @@ class CeleryConfig(object):
     """Celery configuration."""
 
     CELERY_BROKER_URL = os.getenv("CELERY_BROKER", "redis://redis_train:6379/0")
-    CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", "redis://redis_train:6379/0")
+    CELERY_RESULT_BACKEND = os.getenv(
+        "CELERY_RESULT_BACKEND", "redis://redis_train:6379/0"
+    )
+
 
 class CeleryHeadquarterConfig(object):
     """Celery Headquarter Config"""
 
-    CELERY_BROKER_URL = os.getenv("CELERY_HEADQUARTER_BROKER", "redis://redis_headquarter:6379/0")
-    CELERY_RESULT_BACKEND = os.getenv("CELERY_HEADQUARTER_RESULT_BACKEND", "redis://redis_headquarter:6379/0")
-
+    CELERY_BROKER_URL = os.getenv(
+        "CELERY_HEADQUARTER_BROKER", "redis://redis_headquarter:6379/0"
+    )
+    CELERY_RESULT_BACKEND = os.getenv(
+        "CELERY_HEADQUARTER_RESULT_BACKEND", "redis://redis_headquarter:6379/0"
+    )
