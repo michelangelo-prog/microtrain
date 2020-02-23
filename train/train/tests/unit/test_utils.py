@@ -1,3 +1,5 @@
+import unittest
+
 from train.domain.utils import (
     MAX_SPEED,
     MINIMAL_SPEED,
@@ -15,3 +17,7 @@ def test_get_train_speed():
 def test_get_train_station():
     train_station = get_train_station()
     assert train_station in STATIONS
+
+
+if __name__ == "__main__":
+    unittest.main()
