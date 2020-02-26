@@ -30,8 +30,8 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db, directory=MIGRATION_DIR)
 
-    from gatekeeper.domain.models.barrier import Barrier
-    from gatekeeper.domain.models.barrier_status import BarrierStatus
+    from gatekeeper.domain.models.stations import Station
+    from gatekeeper.domain.models.barriers import Barrier
 
     # register blueprints
 
