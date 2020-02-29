@@ -1,5 +1,4 @@
 from flask_testing import TestCase
-
 from gatekeeper.domain import APP_SETTINGS, create_app, db
 
 
@@ -16,3 +15,9 @@ class BaseTestCase(TestCase):
     def tearDown(self):
         db.session.remove()
         db.drop_all()
+
+
+class BarrierMixin:
+    def get_barrier_status(self, station_name):
+        uri = "/api/v1/barrier?station={}".format(station_name)
+        return self.client.get(uri)
