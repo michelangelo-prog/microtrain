@@ -1,4 +1,5 @@
 from flask_testing import TestCase
+
 from gatekeeper.domain import APP_SETTINGS, create_app, db
 
 
@@ -21,3 +22,7 @@ class BarrierMixin:
     def get_barrier_status(self, station_name):
         uri = "/api/v1/barrier?station={}".format(station_name)
         return self.client.get(uri)
+
+    def change_barrier_status(self, **kwargs):
+        uri = "/api/v1/barrier"
+        return self.client.post(uri, **kwargs)
