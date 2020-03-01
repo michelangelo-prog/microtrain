@@ -20,7 +20,11 @@ class BaseTestCase(TestCase):
 
 class BarrierMixin:
     def get_barrier_status(self, station_name):
-        uri = "/api/v1/barrier?station={}".format(station_name)
+        uri = "/api/v1/barrier"
+
+        if station_name:
+            uri += "?station={}".format(station_name)
+
         return self.client.get(uri)
 
     def change_barrier_status(self, **kwargs):

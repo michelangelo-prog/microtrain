@@ -30,10 +30,10 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db, directory=MIGRATION_DIR)
 
-    from gatekeeper.domain.models.stations import Station
-    from gatekeeper.domain.models.barriers import Barrier
-
     # register blueprints
+    from gatekeeper.domain.api.barriers import barrier_blueprint
+
+    app.register_blueprint(barrier_blueprint, url_prefix="/api/v1")
 
     # error handlers
     @app.errorhandler(400)
