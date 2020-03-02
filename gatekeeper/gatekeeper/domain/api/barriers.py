@@ -1,8 +1,16 @@
 from flask import Blueprint, request
+from marshmallow import Schema, fields
 
+from gatekeeper.domain import db
+from gatekeeper.domain.decorators import request_schema
 from gatekeeper.domain.models.stations import Station, StationDoesNotExist
 
 barrier_blueprint = Blueprint("barrier", __name__)
+
+
+class BarrierStatusRequestSchema(Schema):
+    station = fields.Str(required=True)
+    barrier_status = fields.Str(required=True)
 
 
 def raise_KeyError(msg=""):
@@ -21,3 +29,19 @@ def get_barrier_status():
         return {"info": "Station does not exists"}, 400
     except KeyError:
         return {"info": "Provide parameter 'station'"}, 400
+
+
+@barrier_blueprint.route("/barrier", methods=["POST"])
+@request_schema(BarrierStatusRequestSchema)
+def change_barrier_status(json_data):
+    try:
+        station = Station.change_barrier_status_at_station_by_station_name(
+            json_data["station"], json_data["barrier_status"]
+        )
+        db.session.add(station)
+        db.session.commit()
+        return {"status": "success"}, 201
+    except StationDoesNotExist:
+        return {"info": "Station does not exists"}, 400
+    except KeyError:
+        return {"info": "Wrong parameter 'barrier_status'"}, 400
