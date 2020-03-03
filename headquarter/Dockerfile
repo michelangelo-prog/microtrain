@@ -24,3 +24,5 @@ CMD ["./entrypoint.sh"]
 
 # add user
 RUN adduser --disabled-password --gecos '' app_user
+
+RUN chown app_user:app_user -R /usr/src/app/

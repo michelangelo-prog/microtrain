@@ -2,7 +2,7 @@ import random
 
 MINIMAL_SPEED = 0
 MAX_SPEED = 180
-DECIMAL_PLACES = 2
+DECIMAL_PLACES = 1
 
 STATIONS = (
     "Wałcz",
