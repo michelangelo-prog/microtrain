@@ -39,7 +39,7 @@ def train_speed():
     )
 
 
-@periodic_task(run_every=timedelta(seconds=30))
+@periodic_task(run_every=timedelta(seconds=180))
 def train_station():
     celery_headquarter.send_task(
         "periodic.train_station", (dict(train_station=get_train_station()),)

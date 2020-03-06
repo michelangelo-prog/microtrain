@@ -1,9 +1,7 @@
 import os
 from datetime import datetime
 
-from headquarter.domain import APP_DIR
-
-LOG_DIR = "{}/headquarter/logs/".format(APP_DIR)
+from headquarter.domain import LOG_DIR
 
 FILE_NAMES = {"slow": "slow.log", "normal": "normal.log", "fast": "fast.log"}
 

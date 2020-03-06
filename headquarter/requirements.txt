@@ -1,5 +1,8 @@
+Flask==1.1.1
 celery[redis]==4.4.0
+Flask-Testing==0.7.1
 pytest==5.3.1
 pytest-black==0.3.7
 pytest-isort==0.3.1
 pytest-flakes==4.0.0
+requests
