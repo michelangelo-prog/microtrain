@@ -3,7 +3,6 @@ import subprocess
 from flask.cli import FlaskGroup
 
 from gatekeeper.domain import create_app, db
-
 from gatekeeper.domain.utils import fetch_stations_data
 
 app = create_app()
@@ -22,10 +21,12 @@ def drop_db():
     """Drops the db tables."""
     db.drop_all()
 
+
 @cli.command()
 def fetch_data():
     """creates stations in db"""
     fetch_stations_data()
+
 
 @cli.command()
 def test_pytest_with_plugins():

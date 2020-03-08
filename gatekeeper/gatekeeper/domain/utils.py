@@ -1,7 +1,6 @@
 from gatekeeper.domain import db
-
-from gatekeeper.domain.models.stations import Station
 from gatekeeper.domain.models.barriers import Barrier
+from gatekeeper.domain.models.stations import Station
 
 STATIONS = (
     "Wałcz",
@@ -25,6 +24,7 @@ STATIONS = (
     "Złakowo",
     "Duninowo",
 )
+
 
 def fetch_stations_data():
     for name in STATIONS:
