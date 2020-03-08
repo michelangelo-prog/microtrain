@@ -24,6 +24,7 @@ class StationHandler:
     def __check_barrier_status(self, station_name):
         if self.__check_if_station_barrier_is_open(station_name):
             self.close_barrier(station_name)
+            self.__save_closing_time_into_log(station_name)
         else:
             self.__save_error_to_info_log(station_name, "barrier closed")
 
@@ -33,6 +34,12 @@ class StationHandler:
 
     def close_barrier(self, station_name):
         self.gatekeeper_adapter.set_station_barrier_status(station_name, "closed")
+
+    def __save_closing_time_into_log(self, station_name):
+        text = "time: {}  station_name: {} status: barrier closed \n".format(
+            datetime.now(), station_name
+        )
+        self.__append_text_to_info_log_file(text)
 
     def __save_error_to_info_log(self, station_name, error_info):
         text = "time: {}  station_name: {} error_info: {} \n".format(
