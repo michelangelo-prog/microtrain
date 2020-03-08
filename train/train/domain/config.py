@@ -7,7 +7,6 @@ class BaseConfig(object):
     """Base configuration."""
 
     APP_NAME = os.getenv("APP_NAME", "train")
-    REDIS_URL = os.getenv("REDIS", "redis://redis:6379/0")
     WTF_CSRF_ENABLED = False
     TESTING = False
     DEBUG = False

@@ -16,7 +16,6 @@ class TestDevelopmentConfig(TestCase):
 
     def test_app_is_development(self):
         self.assertEqual("train", current_app.config["APP_NAME"])
-        self.assertEqual("redis://redis:6379/0", current_app.config["REDIS_URL"])
         self.assertFalse(current_app.config["WTF_CSRF_ENABLED"])
         self.assertFalse(current_app.config["TESTING"])
         self.assertTrue(current_app.config["DEBUG"])
@@ -30,7 +29,6 @@ class TestTestingConfig(TestCase):
 
     def test_app_is_testing(self):
         self.assertEqual("train", current_app.config["APP_NAME"])
-        self.assertEqual("redis://redis:6379/0", current_app.config["REDIS_URL"])
         self.assertFalse(current_app.config["WTF_CSRF_ENABLED"])
         self.assertTrue(current_app.config["TESTING"])
         self.assertFalse(current_app.config["DEBUG"])
@@ -44,7 +42,6 @@ class TestProductionConfig(TestCase):
 
     def test_app_is_production(self):
         self.assertEqual("train", current_app.config["APP_NAME"])
-        self.assertEqual("redis://redis:6379/0", current_app.config["REDIS_URL"])
         self.assertTrue(current_app.config["WTF_CSRF_ENABLED"])
         self.assertFalse(current_app.config["TESTING"])
         self.assertFalse(current_app.config["DEBUG"])
