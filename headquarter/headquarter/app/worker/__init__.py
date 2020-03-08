@@ -1,5 +1,6 @@
-from headquarter.domain.config import CeleryConfig
 from celery import Celery
+
+from headquarter.domain.config import CeleryConfig
 
 
 def make_worker():
