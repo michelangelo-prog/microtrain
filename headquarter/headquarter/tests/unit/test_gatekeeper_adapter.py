@@ -17,7 +17,7 @@ def mocked_requests_get(*args, **kwargs):
     ):
         return MockResponse({"status": "open"}, 200)
 
-    return MockResponse(None, 404)
+    return MockResponse({"error": "Not found"}, 404)
 
 
 class MockResponse:
@@ -60,7 +60,7 @@ class TestGatekeeperAdapter(TestCase):
         with self.assertRaises(GatekeeperAdapterResponseException) as error:
             adapter.get_station_barrier_status(station_name)
 
-        expected_exception_msg = "Invalid GET response: 404, None"
+        expected_exception_msg = "Invalid GET response: 404, {'error': 'Not found'}"
         expected_call = call(
             params={"station": station_name},
             url="http://gatekeeper:5000/api/v1/barrier",
