@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, abort, request
 from marshmallow import Schema, fields
 
 from gatekeeper.domain import db
@@ -26,7 +26,7 @@ def get_barrier_status():
         )
         return {"status": barrier_status}, 200
     except StationDoesNotExist:
-        return {"info": "Station does not exists"}, 400
+        return abort(404)
     except KeyError:
         return {"info": "Provide parameter 'station'"}, 400
 
@@ -42,6 +42,6 @@ def change_barrier_status(json_data):
         db.session.commit()
         return {"status": "success"}, 201
     except StationDoesNotExist:
-        return {"info": "Station does not exists"}, 400
+        return abort(404)
     except KeyError:
         return {"info": "Wrong parameter 'barrier_status'"}, 400

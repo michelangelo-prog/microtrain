@@ -53,22 +53,26 @@ class TestBarrierBlueprint(BarrierMixin, BaseTestCase):
         self.__add_object_to_db(station)
         return station
 
-    def test_return_400_when_station_does_not_exist(self):
+    def test_return_404_when_station_does_not_exist(self):
         self.__given_station_with_closed_barrier()
         self.response = self.__when_client_checks_status_of_barrier_at_the_station(
             "TEST"
         )
-        self.__then_client_get_400(self.response, "Station does not exists")
+        self.__then_client_get_404(self.response)
 
-    def __then_client_get_400(self, response, info="Bad Request"):
-        self.assertEqual(400, response.status_code)
-        expected_json = {"info": info}
-        self.assertEqual(expected_json, response.json)
+    def __then_client_get_404(self, response):
+        self.assertEqual(404, response.status_code)
+        self.assertEqual({"error": "Not found"}, response.json)
 
     def test_return_400_when_client_check_station_without_parameter_station(self):
         self.__given_station_with_closed_barrier()
         self.response = self.__when_client_checks_status_of_barrier_at_the_station()
         self.__then_client_get_400(self.response, "Provide parameter 'station'")
+
+    def __then_client_get_400(self, response, info="Bad Request"):
+        self.assertEqual(400, response.status_code)
+        expected_json = {"info": info}
+        self.assertEqual(expected_json, response.json)
 
     def test_return_400_when_client_check_station_with_empty_parameter_station(self):
         self.__given_station_with_closed_barrier()
@@ -137,24 +141,19 @@ class TestBarrierBlueprint(BarrierMixin, BaseTestCase):
             station_name=self.station.name, expected_barrier_status=self.expected_status
         )
 
-    def test_return_400_when_client_want_to_close_not_existing_barrier(self):
+    def test_return_404_when_client_want_to_close_not_existing_barrier(self):
         self.__given_station_with_closed_barrier()
         self.response = self.__when_client_requests_to_change_barrier_status(
             station_name="TEST", barrier_status="closed"
         )
-        self.__then_client_get_400_with_status(self.response, "Station does not exists")
+        self.__then_client_get_404(self.response)
 
-    def __then_client_get_400_with_status(self, response, status):
-        self.assertEqual(400, response.status_code)
-        expected_json = {"info": status}
-        self.assertEqual(expected_json, response.json)
-
-    def test_return_400_when_client_want_to_open_not_existing_barrier(self):
+    def test_return_404_when_client_want_to_open_not_existing_barrier(self):
         self.__given_station_with_closed_barrier()
         self.response = self.__when_client_requests_to_change_barrier_status(
             station_name="TEST", barrier_status="open"
         )
-        self.__then_client_get_400_with_status(self.response, "Station does not exists")
+        self.__then_client_get_404(self.response)
 
     def test_return_400_when_client_sent_invalid_barrier_status(self):
         self.station = self.__given_station_with_closed_barrier()
@@ -164,6 +163,11 @@ class TestBarrierBlueprint(BarrierMixin, BaseTestCase):
         self.__then_client_get_400_with_status(
             self.response, "Wrong parameter 'barrier_status'"
         )
+
+    def __then_client_get_400_with_status(self, response, status):
+        self.assertEqual(400, response.status_code)
+        expected_json = {"info": status}
+        self.assertEqual(expected_json, response.json)
 
 
 if __name__ == "__main__":
