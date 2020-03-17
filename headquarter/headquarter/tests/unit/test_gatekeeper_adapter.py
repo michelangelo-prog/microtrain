@@ -1,6 +1,8 @@
 from unittest import TestCase, mock
 from unittest.mock import call
 
+from requests.exceptions import RequestException
+
 from headquarter.domain.adapters.gatekeeper_adapter import (
     GatekeeperAdapter,
     GatekeeperAdapterResponseException,
@@ -53,7 +55,9 @@ class TestGatekeeperAdapter(TestCase):
         "headquarter.domain.adapters.gatekeeper_adapter.requests.get",
         side_effect=mocked_requests_get,
     )
-    def test_raise_exception_when_status_code_is_diffrent_then_200(self, mock_get):
+    def test_raise_exception_when_get_barrier_status_and_status_code_is_different_then_200(
+        self, mock_get
+    ):
         adapter = GatekeeperAdapter()
         station_name = "Test_2"
 
@@ -61,6 +65,29 @@ class TestGatekeeperAdapter(TestCase):
             adapter.get_station_barrier_status(station_name)
 
         expected_exception_msg = "Invalid response: 404, {'error': 'Not found'}"
+        expected_call = call(
+            params={"station": station_name},
+            url="http://gatekeeper:5000/api/v1/barrier",
+        )
+
+        self.assertEqual(expected_exception_msg, str(error.exception))
+        mock_get.assert_called_once()
+        self.assertIn(expected_call, mock_get.call_args_list)
+
+    @mock.patch(
+        "headquarter.domain.adapters.gatekeeper_adapter.requests.get",
+        side_effect=RequestException("test"),
+    )
+    def test_raise_exception_when_get_barrier_status_and_request_raise_request_exception(
+        self, mock_get
+    ):
+        adapter = GatekeeperAdapter()
+        station_name = "Test"
+
+        with self.assertRaises(GatekeeperAdapterResponseException) as error:
+            adapter.get_station_barrier_status(station_name)
+
+        expected_exception_msg = "Invalid request GET: test"
         expected_call = call(
             params={"station": station_name},
             url="http://gatekeeper:5000/api/v1/barrier",
