@@ -33,7 +33,7 @@ class GatekeeperAdapter:
             return response
         except RequestException as error:
             raise GatekeeperAdapterResponseException(
-                "Invalid GET response: {}".format(error)
+                "Invalid request GET: {}".format(error)
             )
 
     def __check_if_response_has_required_response_status_code(
@@ -41,9 +41,7 @@ class GatekeeperAdapter:
     ):
         if not response.status_code == required_status_code:
             raise GatekeeperAdapterResponseException(
-                "Invalid GET response: {}, {}".format(
-                    response.status_code, response.json()
-                )
+                "Invalid response: {}, {}".format(response.status_code, response.json())
             )
 
     def set_station_barrier_status(self, station_name, barrier_status):
@@ -60,5 +58,5 @@ class GatekeeperAdapter:
             return response
         except RequestException as error:
             raise GatekeeperAdapterResponseException(
-                "Invalid GET response: {}".format(error)
+                "Invalid request POST: {}".format(error)
             )
