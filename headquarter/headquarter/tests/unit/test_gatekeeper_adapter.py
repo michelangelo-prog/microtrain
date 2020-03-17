@@ -13,10 +13,7 @@ def mocked_requests_get(*args, **kwargs):
     url = kwargs.get("url")
     params = kwargs.get("params")
 
-    if (
-        url == "http://gatekeeper:5000/api/v1/barrier"
-        and params.get("station") == "Test"
-    ):
+    if url == "http://gatekeeper:5000/api/v1/barrier" and params == {"station": "Test"}:
         return MockResponse({"status": "open"}, 200)
 
     return MockResponse({"error": "Not found"}, 404)
