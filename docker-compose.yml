@@ -49,8 +49,6 @@ services:
       context: ./headquarter
       dockerfile: Dockerfile
     hostname: headquarter
-    volumes:
-      - /home/think/workspace/microtrain/headquarter:/usr/src/app
     command: su -m app_user -c "celery -A headquarter.app.worker.handler:worker worker -P threads --loglevel=info"
     ports:
       - 5003:5000
