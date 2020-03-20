@@ -26,6 +26,7 @@ def drop_db():
 def fetch_data():
     """creates stations in db"""
     fetch_stations_data()
+    print("Data created!")
 
 
 @cli.command()
