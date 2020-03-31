@@ -1,5 +1,5 @@
 # microtrain
-The project involves creation of three microservices that meet the business requirements described below.
+The project involves creation of three microservices that meet the business requirements described below (using Python, Flask, Celery, Redis, PostgreSQL and Docker).
 
 ## Microservices description
 
